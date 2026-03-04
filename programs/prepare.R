@@ -1,13 +1,14 @@
 
-library(dplyr)
-library(tidyr)
+# --------------------------------------- #
+# ---------- DATA  PREPARATION ---------- #
+# --------------------------------------- #
 
 # define date intervals for each season (winter will be the default case)
 spring_interval <- interval(as_date("2021-03-20"), as_date("2021-06-19")) 
 summer_interval <- interval(as_date("2021-06-20"), as_date("2021-09-22"))
 autumn_interval <- interval(as_date("2021-09-22"), as_date("2021-12-20"))
 
-times_wide <- times %>%
+TIMES_WIDE <- TIMES %>%
 
     # tranpose taxi times table to have pickup and dropoff times as separate columns
     pivot_wider(                                    # long to wide format
@@ -52,15 +53,17 @@ times_wide <- times %>%
             levels = c("Spring", "Summer", "Autumn", "Winter"),
             ordered = TRUE
         )
-    )
+    )  %>% 
+    
+    # remove trip durations that are 0s (or less) 
+    filter(trip_duration > 0)    # only ~9 rows removed
   
-  
-# merge TRIPS and TIMES tables
-taxi_trips_nyc <- trips %>% 
+# merge TRIPS and TIMES_WIDE tables
+TAXI_TRIPS_NYC <- TRIPS %>% 
 
     # RIGHT JOIN: keep all rows from TRIPS, add time and location details from TIMES_WIDE
     left_join(
-        times_wide,
+        TIMES_WIDE,
         by = "uniqueid"     # add matching columns from TIMES based on UNIQUEID key
     ) %>% 
     
@@ -69,7 +72,7 @@ taxi_trips_nyc <- trips %>%
 
     # LEFT JOIN: keep all current rows, add pickup_borough location from LOCATIONS
     left_join(
-        locations %>% 
+        LOCATIONS %>% 
             select(locationid, borough) %>%                     # primary key and borough detail of only interest 
             rename(pickup_borough = borough),                   # new_name = old_name
         by = c("pickup_location_codeid" = "locationid")         # add matching columns from LOCATIONS based on location identifier keys
@@ -77,19 +80,30 @@ taxi_trips_nyc <- trips %>%
   
     # LEFT JOIN: keep all current rows, add dropoff_borough location from LOCATIONS
     left_join(
-        locations %>% 
+        LOCATIONS %>% 
             select(locationid, borough) %>% 
             rename(dropoff_borough = borough),
         by = c("dropoff_location_codeid" = "locationid")
     ) %>% 
+    
+    mutate(
+        # flag if pickup and dropoff boroughs were the same
+        borough_flag = if_else(pickup_borough == dropoff_borough, TRUE, FALSE),
 
-    # drop location code ID columns
-    select(-contains("location")) %>% 
+        # enforce mandatory $0.30 surcharge after 2015
+        improvement_surcharge = if_else(pickup_year >= 2015, 0.3, 0)
+    ) %>% 
 
-    # flag if pickup and dropoff boroughs were the same
-    mutate(borough_flag = if_else(pickup_borough == dropoff_borough, TRUE, FALSE))
+    # drop columns
+    select(
+        -contains("location"),      # redundant after merging Boroughs
+        -ehail_fee,                 # all values are NA
+        -store_and_fwd_flag         # not required for analysis
+    )
 
+summary(TAXI_TRIPS_NYC)
 
-locations %>%
-    rename(pickup_borough = borough) %>% 
-    View()
+write_csv(
+    TAXI_TRIPS_NYC,
+    file = file.path(CLEAN, "taxi_trips_nyc.csv")
+)
