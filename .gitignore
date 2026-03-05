@@ -1,0 +1,7 @@
+
+renv/
+.Rprofile
+.Rhistory
+
+data/raw/
+*.pdf
