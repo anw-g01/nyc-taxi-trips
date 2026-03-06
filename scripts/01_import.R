@@ -52,15 +52,15 @@ LOCATIONS <- read_csv(
 
 # view samples and summary statistics of each data set
 
-dfs_list <- list(
+df_list <- list(
     "TRIPS" = TRIPS,
     "TIMES" = TIMES,
     "LOCATIONS" = LOCATIONS
 )
  
-for (df_name in names(dfs_list)) {
+for (df_name in names(df_list)) {
 
-    df <- dfs_list[[df_name]]    # get data frame by name from list of data frames
+    df <- df_list[[df_name]]    # get data frame by name from list of data frames
 
     # select n random samples from each data frame
     cat(glue("\n\nTABLE SAMPLE: {df_name}\n\n\n"))          # blank line for cleaner output
@@ -89,8 +89,14 @@ for (df_name in names(dfs_list)) {
     )
 }
 
+# optional: remove temporary objects from environment variables
+rm(df_name, df)
+
+# create a new environment contrainer to store EDA datasets (for inspection only)
+EDA <- new.env()
+
 # inspect duplicate "UniqueID" observations only
-duplicate_ids <- TRIPS %>% 
+EDA$duplicate_ids <- TRIPS %>% 
     group_by(UniqueID) %>% 
     summarise(n_dups = n()) %>% 
     filter(n_dups > 1) %>% 
@@ -99,7 +105,7 @@ duplicate_ids <- TRIPS %>%
     select(-n_dups)
 
 # check for entire duplicated rows
-duplicate_rows <- TRIPS %>% 
+EDA$duplicate_rows <- TRIPS %>% 
     filter(
         duplicated(
             across(everything())
@@ -107,37 +113,36 @@ duplicate_rows <- TRIPS %>%
     )
 
 # inspect trips with zero (or less) trip distance
-zero_distances <- TRIPS %>% 
+EDA$zero_distances <- TRIPS %>% 
     filter(trip_distance <= 0) %>% 
     arrange(trip_distance)
 
 # inspect trips with negative fare amount
-negative_fares <- TRIPS %>% 
+EDA$negative_fares <- TRIPS %>% 
     filter(fare_amount <= 0) %>% 
     arrange(fare_amount)
 
 # inspect trips with zero (or less) passenger count 
-zero_passengers <- TRIPS %>% 
+EDA$zero_passengers <- TRIPS %>% 
     filter(passenger_count <= 0) %>% 
     arrange(passenger_count)
 
 # inspect negative trip distances and fare amounts together (potentially cancelled trips that were logged)
-cancelled_trips <- TRIPS %>% 
+EDA$cancelled_trips <- TRIPS %>% 
     filter(trip_distance <= 0 & fare_amount <= 0)
 
 # inspect negative "extras" (miscellaneous & surcharges)
-negative_extras <- TRIPS %>% 
+EDA$negative_extras <- TRIPS %>% 
     filter(extra < 0) %>% 
     arrange(extra)
 
 # inspect largest trip distances 
-longest_trips <- TRIPS %>% 
-    filter(trip_distance > 100) %>% 
+EDA$longest_trips <- TRIPS %>% 
+    filter(trip_distance > 50) %>% 
     arrange(desc(trip_distance)) 
-
-# all trips with unrealisitically high trip distances (trip_distance > 500 miles) have PaymentType = "Voided Trip" 
+# NOTE: all trips with unrealisitically high trip distances (trip_distance > 500 miles) have PaymentType = "Voided Trip" 
 
 # inspect trips with "Voided Trip" payment type (7) 
-voided_trips <- TRIPS %>% 
+EDA$voided_trips <- TRIPS %>% 
     filter(PaymentType == 7) %>% 
     arrange(desc(trip_distance))

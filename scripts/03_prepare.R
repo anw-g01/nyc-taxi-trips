@@ -8,7 +8,7 @@ spring_interval <- interval(as_date("2021-03-20"), as_date("2021-06-19"))
 summer_interval <- interval(as_date("2021-06-20"), as_date("2021-09-22"))
 autumn_interval <- interval(as_date("2021-09-22"), as_date("2021-12-20"))
 
-TIMES_WIDE <- TIMES %>%
+TIMES_WIDE <- TIMES_CLEAN %>%
 
     # tranpose taxi times table to have pickup and dropoff times as separate columns
     pivot_wider(                                    # long to wide format
@@ -19,9 +19,6 @@ TIMES_WIDE <- TIMES %>%
         names_glue = "{trip_type}_{.value}"
     ) %>% 
     
-    # replace spaces in column names (mainly for "drop off") with underscores
-    rename_all(~ str_replace(., " ", "_"))  %>% 
-
     # create new date-related columns from pickup_time
     mutate(
 
@@ -35,9 +32,9 @@ TIMES_WIDE <- TIMES %>%
             abbr = FALSE    # show full weekday names
         ),
 
-        # calculate trip duration 
-        trip_duration = as.duration(dropoff_time - pickup_time),
-        trip_duration_secs = as.integer(trip_duration),
+        # calculate trip duration (convert to seconds without extra characters)
+        duration_secs = as.integer(as.duration(dropoff_time - pickup_time)),
+        duration_mins = duration_secs / 60,     
 
         # create a new column for trip season
         trip_season = case_when(
@@ -55,35 +52,40 @@ TIMES_WIDE <- TIMES %>%
         )
     )  %>% 
     
-    # remove trip durations that are 0s (or less) 
-    filter(trip_duration > 0)    # only ~9 rows removed
+    # remove unrealistic trip durations 
+    filter_out(
+        duration_secs <= 0         # zero or less (most likely errors)
+        | duration_mins > 90       # longer than threshold: 2 hours (conservative) or 1.5 hours (strict)
+    )    
+
+rm(spring_interval, summer_interval, autumn_interval)
   
 # merge TRIPS and TIMES_WIDE tables
-TAXI_TRIPS_NYC <- TRIPS %>% 
+TAXI_TRIPS_NYC <- TRIPS_CLEAN %>% 
 
-    # RIGHT JOIN: keep all rows from TRIPS, add time and location details from TIMES_WIDE
+    # LEFT JOIN: keep all rows from TRIPS, add time and location IDs from TIMES_WIDE
     left_join(
         TIMES_WIDE,
         by = "uniqueid"     # add matching columns from TIMES based on UNIQUEID key
     ) %>% 
     
     # only keep trips in 2021 (only 5 trips not in 2021)
-    filter(pickup_year == 2021) %>% 
+    filter(pickup_year == 2021) %>%     # filtered AFTER joining due to LEFT JOIN
 
-    # LEFT JOIN: keep all current rows, add pickup_borough location from LOCATIONS
+    # LEFT JOIN: keep all current rows, add pickup_borough from LOCATIONS
     left_join(
-        LOCATIONS %>% 
+        LOCATIONS_CLEAN %>% 
             select(locationid, borough) %>%                     # primary key and borough detail of only interest 
             rename(pickup_borough = borough),                   # new_name = old_name
-        by = c("pickup_location_codeid" = "locationid")         # add matching columns from LOCATIONS based on location identifier keys
+        by = join_by(pickup_location_codeid == locationid)     # different column key names
     ) %>% 
   
-    # LEFT JOIN: keep all current rows, add dropoff_borough location from LOCATIONS
+    # LEFT JOIN: keep all current rows, add dropoff_borough from LOCATIONS
     left_join(
-        LOCATIONS %>% 
+        LOCATIONS_CLEAN %>% 
             select(locationid, borough) %>% 
             rename(dropoff_borough = borough),
-        by = c("dropoff_location_codeid" = "locationid")
+        by = join_by(dropoff_location_codeid == locationid)     # different column key names
     ) %>% 
     
     mutate(
@@ -96,12 +98,10 @@ TAXI_TRIPS_NYC <- TRIPS %>%
 
     # drop columns
     select(
-        -contains("location"),      # redundant after merging Boroughs
-        -ehail_fee,                 # all values are NA
-        -store_and_fwd_flag         # not required for analysis
+        -contains("location_codeid"),   # not required after merging Boroughs
+        -ehail_fee,                     # all values are NA
+        -store_and_fwd_flag             # not required for analysis
     )
-
-summary(TAXI_TRIPS_NYC)
 
 write_csv(
     TAXI_TRIPS_NYC,
