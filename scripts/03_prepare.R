@@ -32,6 +32,13 @@ TIMES_WIDE <- TIMES_CLEAN %>%
             abbr = FALSE    # show full weekday names
         ),
 
+        # optional: re-order weekday ordering
+        pickup_weekday = factor(
+            pickup_weekday,
+            levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"),
+            ordered = TRUE
+        ),
+
         # calculate trip duration (convert to seconds without extra characters)
         duration_secs = as.integer(as.duration(dropoff_time - pickup_time)),
         duration_mins = duration_secs / 60,     
@@ -103,7 +110,14 @@ TAXI_TRIPS_NYC <- TRIPS_CLEAN %>%
         -store_and_fwd_flag             # not required for analysis
     )
 
+# export TAXI_TRIPS_NYC dataset to CSV
 write_csv(
     TAXI_TRIPS_NYC,
     file = file.path(CLEAN, "taxi_trips_nyc.csv")
+)
+
+# export TAXI_TRIPS_NYC dataset to RDS (preserves all column data types)
+saveRDS(
+    TAXI_TRIPS_NYC,
+    file = file.path(CLEAN, "taxi_trips_nyc.rds")
 )

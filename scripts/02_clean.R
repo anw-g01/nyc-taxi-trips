@@ -56,11 +56,12 @@ TRIPS_CLEAN <- TRIPS %>%
     # remove entire duplicate rows (ensure all columns remain)
     distinct(uniqueid, .keep_all = TRUE) %>%      # keep all columns
   
-    # remove rows with negative trip distances (accounts for only ~5% of total observations of the data)
+    # remove rows with unrealistic values that are unrealistic accounts for only ~5% of total observations of the data)
     filter_out(
-        trip_distance <= 0          # zero or negative trip distances
+        trip_distance <= 0          # zero or negative trip distances (~5%)
         | trip_distance > 30        # unrealistic values threshold: >50 miles (conservative) or >30 (strict)
         | fare_amount <= 0          # negative fare amounts
+        | passenger_count > 8       # there is observation with 32 passengers (highly unrealistic data point)
     ) %>% 
     # all trip distances > 500 miles are Voided Trips (the reset are kept as they form a large portion of the data)
     # there is one trip ~600 that could be legitimate but was removed as the next lowest is 100 miles and thus considered an anomaly for analysis

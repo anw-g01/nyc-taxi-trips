@@ -1,0 +1,561 @@
+---
+title: "NYC Taxi Trips - Data Analysis in R"
+author: "Anwarat Gurung"
+date: today
+date-format: "ddd, D MMM YYYY"
+format:
+    html:
+        # table of contents
+        toc: true
+        toc-location: right-body
+        toc-title: "Report Sections"
+        toc-depth: 3
+        number-sections: true
+        anchor-sections: true
+        # figure options
+        fig-format: svg
+        fig-align: center
+        fig-width: 8
+        fig-height: 6
+        # code block options
+        code-fold: true 
+        code-copy: true 
+        code-summary: "Show Code"
+        code-line-numbers: false
+        # extras
+        theme: journal
+        page-layout: article
+        df-print: paged
+        smooth-scroll: true 
+execute:
+    warning: false
+    message: false
+---
+
+```{r code-setup}
+#| include: false
+
+# run setup script to load libraries and file paths
+source(here::here("scripts", "00_setup.R"))
+
+# export cleaned and processed taxi trips dataset
+TAXI_TRIPS_NYC <- readRDS(file = file.path(CLEAN, "taxi_trips_nyc.rds"))
+```
+
+# Daily Revenue Trends (2021)
+
+Visualise daily taxi revenue for trips recorded in 2021, comparing taxi vendors: `Green Taxi` and `Uber`.
+
+```{r}
+#| code-fold: false
+
+# summarise daily revenues for Green Taxi and Uber only
+daily_revenue <- TAXI_TRIPS_NYC %>% 
+    filter(vendorid %in% c("Green Taxi", "Uber")) %>% 
+    group_by(vendorid, pickup_date) %>%
+    summarise(
+        daily_rev = sum(total_amount), 
+        .groups = "drop"
+    )     
+
+daily_revenue
+```
+
+```{r daily-rev-series}
+#| code-line-numbers: true
+
+# pick a colour palette
+colours <- paletteer_d("MoMAColors::Abbott")    
+
+ggplot(
+    data = daily_revenue,
+    mapping = aes(
+        x = pickup_date,
+        y = daily_rev,
+        colour = vendorid       # group by vendorid for separate lines
+    )
+) +
+    # line plot (series)
+    geom_line(
+        # alpha = 0.3,
+        linewidth = 0.7
+    ) +
+    
+    # prevent clipping of any labels
+    coord_cartesian(clip = "off") +        
+
+# hardcoded date filtering
+    scale_x_date(
+        limits = as.Date(c("2021-07-01", "2021-07-31"))
+    ) +
+    
+    geom_smooth(
+        method = "lm",
+        se = FALSE,
+        linetype = "dashed",
+        alpha = 0.4,
+        linewidth = 0.6
+    ) + 
+    
+    scale_y_continuous(
+        n.breaks = 10,
+        labels = scales::label_number(
+            prefix = "$",
+            scale = 1e-3,
+            suffix = "k",
+            accuracy = 1
+        )
+    ) +
+    
+    # manually set colour for each taxi vendor
+    scale_colour_manual(
+        values = c(
+            "Green Taxi" = colours[[5]],
+            "Uber" = colours[[1]],
+            "Other" = colours[[7]]
+        )
+    ) +
+
+    # set text for: title, subtitle, caption
+    labs(
+        title = str_c(
+            "<b>Daily Taxi Revenue in NYC: ",
+            "<span style='color:", colours[[1]], "; font-weight:bold;'>Uber</span> vs ",
+            "<span style='color:", colours[[5]], "; font-weight:bold;'>Green Taxi</span></b>"
+        ),
+        subtitle = "Daily revenue from taxi trips in NYC by vendor, July 2021",
+        caption = "Source: NYC Taxi & Limousine Commission (TLC) Trip Record Data",
+        x = NULL, y = NULL
+    ) +
+    
+    # apply base theme
+    theme_minimal(
+        base_family = "Palatino Linotype",
+        base_size = 11    
+    ) +
+  
+    # finetune theme elements
+    theme(
+        plot.title = element_markdown(          # markdown elements to add HTML/CSS styling/colouring
+            size = rel(1.5),                    # relative font size to base_size (from base theme)
+            margin = margin(b = 12)             # bottom vertical spacing
+        ),
+        plot.subtitle = element_markdown(
+            colour = "#6e6e6e", # grey
+            size = rel(1),
+            margin = margin(b = 24),
+        ),
+        plot.caption = element_text(
+            colour = "#6e6e6e", 
+            size = rel(0.7),
+            hjust = 1,                          # caption right-aligned (0 = left-aligned)
+            margin = margin(t = 12),
+        ),
+        plot.title.position = "plot",           # align title to the left of the figure
+        axis.title.x = element_text(margin = margin(t = 8)),
+        # panel.grid.major.x = element_blank(),   
+        panel.grid.minor = element_blank(),     # remove all minor grid lines
+        axis.text.x = element_text(             # x axis ticker labels
+            vjust = 1,   # distance to x axis
+            colour = "black",
+            size = rel(1.2)
+        ),
+        axis.text.y = element_text(             # x axis ticker labels
+            colour = "black",
+            size = rel(1.2)
+        ),
+        legend.position = "none",               # remove all legends
+        plot.margin = margin(15, 15, 15, 15),   # set consistent outer border space
+    )
+```
+
+```{r}
+#| include: false
+
+# save figure output to file
+ggsave(file.path(FIGURES, "revenue_trends_by_vendor.svg"))
+```
+
+# Green Taxi Analysis
+
+## Revenue by Trip Type
+
+Summarise total Green Taxi revenue by **trip type**, identifying which trip category generated the most revenue in 2021.
+
+```{r}
+#| code-fold: false
+
+# aggregate and summarise data
+rev_by_trips <- TAXI_TRIPS_NYC %>% 
+    filter(vendorid == "Green Taxi" & !is.na(trip_type)) %>% 
+    group_by(trip_type) %>% 
+    summarise(
+        total_revenue = sum(total_amount),
+        # optional: extra insights
+        total_trips = n(),
+        total_mins = sum(duration_mins)
+    ) %>% 
+    mutate(revenue_per_min = total_revenue / total_mins)
+
+rev_by_trips
+```
+
+```{r rev-by-trip-type-bar}
+#| code-line-numbers: true
+
+# extract the trip_type with the highest revenue
+top_trip_type <- rev_by_trips %>% 
+    slice_max(order_by = total_revenue, n = 1) %>% 
+    pull(trip_type) %>%      
+    as.character()   
+
+# assign fill colours for bars
+highlight_colour <- "#751C6DFF"               
+rev_by_trips <- mutate(rev_by_trips, bar_colour = if_else(trip_type == top_trip_type, highlight_colour, "lightgrey"))
+
+# plot: bar chart
+ggplot(
+    rev_by_trips, 
+    aes(
+        x = fct_reorder(
+            trip_type, 
+            total_revenue,    
+            .desc = TRUE
+        ),
+        y = total_revenue
+    )
+) +
+    # bar chart + highlight colouring
+    geom_bar(
+        stat = "identity",
+        width = 0.5,
+        aes(fill = trip_type == top_trip_type),  
+    ) +
+    scale_fill_manual(
+        values = c(
+            "TRUE" = highlight_colour,
+            "FALSE" = "lightgrey"
+        )
+    ) + 
+    
+    # text labels (of revenue values)
+    geom_text(
+        aes(
+            label = scales::label_dollar(accuracy = 1)(total_revenue),
+            colour = trip_type == top_trip_type,
+            fontface = ifelse(trip_type == top_trip_type, "bold", "plain")
+        ),
+        size = 5,
+        vjust = -1
+    ) + 
+    scale_colour_manual(
+        values = c(
+            "TRUE" = highlight_colour,
+            "FALSE" = "black"
+        )
+    ) +
+  
+    # set text for: title, subtitle, caption
+    labs(
+        title = str_c(
+            "<b>The Majority of Green Taxi Revenue is Generated by ",
+            "<span style='color:", highlight_colour, 
+            "; font-weight:bold;'>", top_trip_type, 
+            "</span> Trips"
+        ),
+        subtitle = "Total revenue of <b>Green Taxi</b> trips by trip type, NYC (2021)",
+        caption = "Source: NYC Taxi & Limousine Commission (TLC) Trip Record Data",
+        x = NULL, y = NULL    
+    ) +
+        
+    # prevent clipping of any labels
+    coord_cartesian(clip = "off") +
+    
+    # apply base theme
+    theme_minimal(
+        base_family = "Palatino Linotype",
+        base_size = 11 
+    ) +
+    
+    # finetune theme elements
+    theme(
+        plot.title = element_markdown(
+            size = rel(1.5),
+            margin = margin(b = 12),
+            lineheight = 1.4
+        ),
+        plot.subtitle = element_markdown(
+            colour = "#6e6e6e",
+            size = rel(1),
+            margin = margin(b = 30)
+        ),
+        plot.caption = element_text(
+            colour = "#6e6e6e", 
+            size = rel(0.7),
+            hjust = 1
+        ),
+        plot.title.position = "plot",
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_text(
+            vjust = 3.5,
+            colour = "black",
+            size = rel(1.2)
+        ),
+        legend.position = "none",
+        plot.margin = margin(15, 15, 15, 15)
+    )
+```
+
+```{r}
+#| include: false
+ggsave(file.path(FIGURES, "gt_revenue_by_trip_type.svg"), width = 9)
+```
+
+## Pickup Borough Distribution
+
+Visualise the counts of Green Taxi **pickups** across **boroughs** to identify the most popular serivce areas.
+
+```{r}
+#| code-fold: false
+
+# aggregate and summarise data
+trips_by_borough <- TAXI_TRIPS_NYC %>% 
+    filter(vendorid == "Green Taxi" & !is.na(pickup_borough)) %>% 
+    group_by(pickup_borough) %>% 
+    summarise(total_trips = n())   # count no. of trips per borough   
+
+trips_by_borough
+```
+
+```{r trips-by-borough-bar}
+#| code-line-numbers: true
+
+# extract the most popular pickup_borough by total_trips
+top_borough <- trips_by_borough %>% 
+  slice_max(order_by = total_trips, n = 1) %>% 
+  pull(pickup_borough) %>%      # return single column
+  as.character()                # convert to text character
+
+# assign fill colours for bars
+colours <- paletteer_d("futurevisions::hd")     # pick a colour palette
+highlight_colour <- colours[[1]]                # pick a highlight colour from palette
+trips_by_borough <- trips_by_borough %>% 
+  mutate(bar_colour = if_else(pickup_borough == top_borough, highlight_colour, "lightgrey"))
+
+# plot: bar chart
+ggplot(
+    trips_by_borough, 
+    aes(
+        x = fct_reorder(
+            pickup_borough, 
+            total_trips,    # order by descending trip counts
+            .desc = TRUE
+        ),
+        y = total_trips
+    )
+) +
+    # bar chart + highlight colouring
+    geom_bar(
+        stat = "identity",
+        width = 0.8,
+        # map fill to a bool condition to highlight the top borough
+        aes(fill = pickup_borough == top_borough),  
+    ) +
+    scale_fill_manual(
+        values = c(
+            "TRUE" = highlight_colour,
+            "FALSE" = "lightgrey"
+        )
+    ) + 
+    
+    # text labels (of values) for total_trips
+    geom_text(
+        aes(
+            label = scales::comma(total_trips),
+            # map fill to a bool condition to highlight the top value
+            colour = pickup_borough == top_borough,
+            # repeat to make top borough bold font
+            fontface = ifelse(pickup_borough == top_borough, "bold", "plain")
+        ),
+        size = 5,
+        vjust = -1
+    ) + 
+    scale_colour_manual(
+        values = c(
+            "TRUE" = highlight_colour,
+            "FALSE" = "black"
+        )
+    ) +
+  
+    # prevent clipping of any labels
+    coord_cartesian(clip = "off") +
+  
+    # set text for: title, subtitle, caption
+    labs(
+        title = str_c(
+            "<b>Top Pickup Borough For Green Taxis: ",
+            "<span style='color:", highlight_colour, 
+            "; font-weight:bold;'>", top_borough, "</span>"
+        ),
+        subtitle = "Total number of <b>Green Taxi</b> trips by pickup borough, NYC (2021)",
+        caption = "Source: NYC Taxi & Limousine Commission (TLC) Trip Record Data",
+        x = NULL, y = NULL    # no x/y axis label for bar charts
+    ) +
+        
+    # apply base theme
+    theme_minimal(
+        base_family = "Palatino Linotype",
+        base_size = 11 
+    ) +
+  
+    # finetune theme elements
+    theme(
+        # title, subtitle, caption
+        plot.title = element_markdown(          # markdown elements to add HTML/CSS styling/colouring
+            size = rel(1.5),                    # relative font size to base_size (from base theme)
+            margin = margin(b = 12)             # bottom vertical spacing
+        ),
+        plot.subtitle = element_markdown(
+            colour = "#6e6e6e",               # grey
+            size = rel(1),
+            margin = margin(b = 24),
+        ),
+        plot.caption = element_text(
+            colour = "#6e6e6e", 
+            size = rel(0.7),
+            hjust = 1                           # caption right-aligned (0 = left-aligned)
+        ),
+        plot.title.position = "plot",           # align title to the left of the figure
+        # axes, grid, legend, margin
+        panel.grid.major.x = element_blank(),   # remove vertical major lines
+        panel.grid.minor = element_blank(),     # remove all minor grid lines
+        axis.text.x = element_text(             # x axis ticker labels
+            vjust = 3.5,   # distance to x axis
+            colour = "black",
+            size = rel(1.2)
+        ),
+        legend.position = "none",               # remove all legends
+        plot.margin = margin(15, 15, 15, 15),   # set consistent outer border space
+    )
+```
+
+```{r}
+#| include: false
+
+# save figure output to file
+ggsave(file.path(FIGURES, "gt_trips_by_borough.svg"))
+```
+
+# Trip Activity by Hour
+
+Visualise the **hourly distribution** of taxi pickups to identify peak service hours across vendors.
+
+```{r hourly-pickup-kde}
+#| code-line-numbers: true
+
+# choose a colour palette
+colours <- paletteer_d("MoMAColors::Abbott") 
+
+# plot: kernel density estimate (KDE) 
+ggplot(
+    TAXI_TRIPS_NYC, aes(
+        x = pickup_hour,
+        colour = vendorid       # group by taxi vendor
+    )
+) + 
+    
+    # KDE plot with curved vendor text labels (see geomtextpath library)
+    geom_textdensity(
+        aes(
+            y = after_stat(count),       # compare actual counts between vendors (instead of probability density)
+            label = vendorid
+        ),     
+        adjust = 1.6,       # higher value smoothens fluctuations
+        linewidth = 0.7,    # KDE line thickness
+        # geomtext path parameters
+        hjust = 0.75,
+        gap = FALSE,        # don't create gaps within lines
+        vjust = -0.25,          # move text labels above respective line
+        size = 4,
+        fontface = "bold",
+        family = "Palatino Linotype"    # font family
+    ) +
+    
+    # manually set colour for each taxi vendor
+    scale_colour_manual(
+        values = c(
+            "Green Taxi" = colours[[5]],
+            "Uber" = colours[[1]],
+            "Other" = colours[[7]]
+        )
+    ) +
+    
+    # set x and y axis tick intervals
+    scale_x_continuous(
+        breaks = seq(0, 23, by = 3),
+        labels = ~ sprintf("%02d:00", .)    # format pickup hour 
+    ) +
+    scale_y_continuous(n.breaks = 4) +
+    coord_cartesian(
+        xlim = c(NA, 22),   # crop x axis limits (does not remove data points)
+        clip = "off"        # prevent clipping of any labels
+    ) +
+  
+    # set text for: title, subtitle, caption
+    labs(
+        title = str_c(
+            "<b>Evening Taxi Trips in NYC are Dominated by ",
+            "<span style='color:", colours[[1]],
+            "; font-weight:bold;'>Uber</span></b>"      # hardcoded vendor
+        ),
+        subtitle = "Hourly distribution of <b>taxi trips</b> by vendor, NYC (2021)",
+        caption = "Source: NYC Taxi & Limousine Commission (TLC) Trip Record Data",
+        x = "Pickup Hour", 
+        y = NULL    
+    ) +
+    
+    # apply base theme
+    theme_minimal(
+        base_family = "Palatino Linotype",
+        base_size = 11   
+    ) +
+  
+    # finetune theme elements
+    theme(
+        # title, subtitle, caption
+        plot.title = element_markdown(          # markdown elements to add HTML/CSS styling/colouring
+            size = rel(1.5),                    # relative font size to base_size (from base theme)
+            margin = margin(b = 12)             # bottom vertical spacing
+        ),
+        plot.subtitle = element_markdown(
+            colour = "#6e6e6e",               # grey
+            size = rel(1),
+            margin = margin(b = 24),
+        ),
+        plot.caption = element_text(
+            colour = "#6e6e6e", 
+            size = rel(0.7),
+            hjust = 1                           # caption right-aligned (0 = left-aligned)
+        ),
+        plot.title.position = "plot",           # align title to the left of the figure
+        # axes, grid, legend, margin
+        axis.title.x = element_text(margin = margin(t = 9)),
+        panel.grid.major.y = element_blank(),   
+        panel.grid.minor = element_blank(),     # remove all minor grid lines
+        axis.text.x = element_text(             # x axis ticker labels
+            vjust = 0.5,   # distance to x axis
+            colour = "black",
+            size = rel(1.2)
+        ),
+        legend.position = "none",               # remove all legends
+        plot.margin = margin(15, 15, 15, 15),   # set consistent outer border space
+    )
+```
+
+```{r}
+#| include: false
+
+# save figure output to file
+ggsave(file.path(FIGURES, "pickup_hour_distribution_by_vendor.svg"), width = 8)
+```
