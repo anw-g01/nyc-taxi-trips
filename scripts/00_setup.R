@@ -19,7 +19,8 @@ RAW     <- here("data", "raw")
 CLEAN   <- here("data", "clean")
 MARTS   <- here("data", "marts")
 REPORTS <- here("reports")
-FIGURES <- here("figures")
+TABLES  <- here("outputs", "tables")
+FIGURES <- here("outputs", "figures")
 
 # define global variables for visualisations and outputs
 

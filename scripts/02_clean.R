@@ -42,7 +42,7 @@ for (df_name in names(df_list)) {
 }
 
 # export MISSING table as CSV to REPORTS directory
-write_csv(MISSING, file = file.path(REPORTS, "missing_values.csv"))
+write_csv(MISSING, file = file.path(TABLES, "missing_values.csv"))
 
 # ----------------------------------------------- #
 # ---------- DATA CLEANING & WRANGLING ---------- #
@@ -58,8 +58,8 @@ TRIPS_CLEAN <- TRIPS %>%
   
     # remove rows with unrealistic values that are unrealistic accounts for only ~5% of total observations of the data)
     filter_out(
-        trip_distance <= 0          # zero or negative trip distances (~5%)
-        | trip_distance > 30        # unrealistic values threshold: >50 miles (conservative) or >30 (strict)
+        trip_distance <= 0.3        # removes zero and negative trip distances (~5%), lots more values between 0.01 to 1 miles
+        | trip_distance > 30        # unrealistic values threshold: >50 miles (conservative) or >30 (strict) could include airport trips
         | fare_amount <= 0          # negative fare amounts
         | passenger_count > 8       # there is observation with 32 passengers (highly unrealistic data point)
     ) %>% 

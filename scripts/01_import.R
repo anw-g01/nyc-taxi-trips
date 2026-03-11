@@ -108,7 +108,7 @@ NUM_VARS_SUMMARY <- TRIPS %>%
         names_pattern = "(.+)_(min|max|mean)"
     )
 
-write_csv(NUM_VARS_SUMMARY, file = file.path(REPORTS, "num_vars_summary.csv"))
+write_csv(NUM_VARS_SUMMARY, file = file.path(TABLES, "num_vars_summary.csv"))
 
 # summarise distinct values of all character columns
 CHAR_VARS_SUMMARY <- TRIPS %>% 
@@ -124,7 +124,7 @@ CHAR_VARS_SUMMARY <- TRIPS %>%
         values_to = "n_distinct"
     )
 
-write_csv(CHAR_VARS_SUMMARY, file = file.path(REPORTS, "char_vars_summary.csv"))
+write_csv(CHAR_VARS_SUMMARY, file = file.path(TABLES, "char_vars_summary.csv"))
 
 # optional: remove temporary objects from environment variables
 rm(df_name, df)
