@@ -30,7 +30,6 @@ format:
 execute:
     warning: false
     message: false
-    cache: true
 ---
 
 This report presents a summary of the cleaned 2021 taxi trip data, available [here](https://github.com/anw-g01/nyc-taxi-trips/tree/main/data/clean){target="_blank"}. It explores variable distributions, missing values, and key summary statistics across numerical and categorical features.
@@ -461,7 +460,7 @@ TAXI_TRIPS_NYC %>%
 
 :::
 
-# Sample
+# Dataset Sample
 
 View a random sample from the dataset.
 

@@ -30,7 +30,6 @@ format:
 execute:
     warning: false
     message: false
-    cache: true
 ---
 
 This report presents analyses and visualisations of 2021 taxi trip data from the processed dataset available at `data/clean/taxi_trips_nyc.csv`. The outputs focus on trip activity and patterns, including taxi vendor performance, revenue trends, tipping behaviour, and hourly peak travel periods.
