@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='576.00pt' height='432.00pt' viewBox='0 0 576.00 432.00'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw1NzYuMDB8MC4wMHw0MzIuMDA='>
+    <rect x='0.00' y='0.00' width='576.00' height='432.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHw0MzIuMDA=)'>
+<rect x='0.00' y='0.00' width='576.00' height='432.00' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<polyline points='41.91,375.06 561.06,375.06 ' style='stroke-width: 1.07; stroke: #EBEBEB; stroke-linecap: butt;' />
+<polyline points='41.91,301.36 561.06,301.36 ' style='stroke-width: 1.07; stroke: #EBEBEB; stroke-linecap: butt;' />
+<polyline points='41.91,227.67 561.06,227.67 ' style='stroke-width: 1.07; stroke: #EBEBEB; stroke-linecap: butt;' />
+<polyline points='41.91,153.97 561.06,153.97 ' style='stroke-width: 1.07; stroke: #EBEBEB; stroke-linecap: butt;' />
+<rect x='124.50' y='97.37' width='117.99' height='277.69' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #751C6D;' />
+<rect x='360.48' y='373.40' width='117.99' height='1.66' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #D3D3D3;' />
+<text x='183.49' y='87.57' text-anchor='middle' style='font-size: 14.23px; font-weight: bold;fill: #751C6D; font-family: "Palatino Linotype";' textLength='46.22px' lengthAdjust='spacingAndGlyphs'>$94,202</text>
+<text x='419.47' y='363.61' text-anchor='middle' style='font-size: 14.23px; font-family: "Palatino Linotype";' textLength='28.44px' lengthAdjust='spacingAndGlyphs'>$562</text>
+<text x='36.98' y='378.09' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Palatino Linotype";' textLength='4.41px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='36.98' y='304.39' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Palatino Linotype";' textLength='22.03px' lengthAdjust='spacingAndGlyphs'>25000</text>
+<text x='36.98' y='230.70' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Palatino Linotype";' textLength='22.03px' lengthAdjust='spacingAndGlyphs'>50000</text>
+<text x='36.98' y='157.00' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Palatino Linotype";' textLength='22.03px' lengthAdjust='spacingAndGlyphs'>75000</text>
+<text x='183.49' y='393.70' text-anchor='middle' style='font-size: 10.56px; font-family: "Palatino Linotype";' textLength='47.53px' lengthAdjust='spacingAndGlyphs'>Inner City</text>
+<text x='419.47' y='393.70' text-anchor='middle' style='font-size: 10.56px; font-family: "Palatino Linotype";' textLength='49.80px' lengthAdjust='spacingAndGlyphs'>Outer City</text>
+<text x='14.94' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='25.03px' lengthAdjust='spacingAndGlyphs'>Total</text>
+<text x='42.73' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='39.22px' lengthAdjust='spacingAndGlyphs'>revenue</text>
+<text x='84.69' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='9.66px' lengthAdjust='spacingAndGlyphs'>of</text>
+<text x='97.10' y='50.50' style='font-size: 11.00px; font-weight: bold;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='31.16px' lengthAdjust='spacingAndGlyphs'>Green</text>
+<text x='131.01' y='50.50' style='font-size: 11.00px; font-weight: bold;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='21.11px' lengthAdjust='spacingAndGlyphs'>Taxi</text>
+<text x='154.87' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='22.41px' lengthAdjust='spacingAndGlyphs'>trips</text>
+<text x='180.02' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='12.20px' lengthAdjust='spacingAndGlyphs'>by</text>
+<text x='194.98' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='17.75px' lengthAdjust='spacingAndGlyphs'>trip</text>
+<text x='215.48' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='24.34px' lengthAdjust='spacingAndGlyphs'>type,</text>
+<text x='242.57' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='24.28px' lengthAdjust='spacingAndGlyphs'>NYC</text>
+<text x='269.60' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='29.31px' lengthAdjust='spacingAndGlyphs'>(2021)</text>
+<text x='14.94' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='29.33px' lengthAdjust='spacingAndGlyphs'>The</text>
+<text x='48.40' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='66.02px' lengthAdjust='spacingAndGlyphs'>Majority</text>
+<text x='118.54' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='15.59px' lengthAdjust='spacingAndGlyphs'>of</text>
+<text x='138.26' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='46.75px' lengthAdjust='spacingAndGlyphs'>Green</text>
+<text x='189.13' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='31.67px' lengthAdjust='spacingAndGlyphs'>Taxi</text>
+<text x='224.93' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='65.58px' lengthAdjust='spacingAndGlyphs'>Revenue</text>
+<text x='294.63' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='12.83px' lengthAdjust='spacingAndGlyphs'>is</text>
+<text x='311.58' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='78.83px' lengthAdjust='spacingAndGlyphs'>Generated</text>
+<text x='394.54' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='19.25px' lengthAdjust='spacingAndGlyphs'>by</text>
+<text x='417.91' y='26.32' style='font-size: 16.50px; font-weight: bold;fill: #751C6D; font-family: "Palatino Linotype";' textLength='41.25px' lengthAdjust='spacingAndGlyphs'>Inner</text>
+<text x='463.29' y='26.32' style='font-size: 16.50px; font-weight: bold;fill: #751C6D; font-family: "Palatino Linotype";' textLength='32.09px' lengthAdjust='spacingAndGlyphs'>City</text>
+<text x='499.51' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='40.33px' lengthAdjust='spacingAndGlyphs'>Trips</text>
+<text x='561.06' y='414.89' text-anchor='end' style='font-size: 7.70px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='255.72px' lengthAdjust='spacingAndGlyphs'>Source: NYC Taxi &amp; Limousine Commission (TLC) Trip Record Data (2021)</text>
+</g>
+</g>
+</svg>

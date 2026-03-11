@@ -33,7 +33,7 @@ execute:
     cache: true
 ---
 
-This report explores the NYC Green Taxi trip data to identify patterns in trip costs and tipping behaviour across different features such as time, passenger count, and location.
+This report presents a summary of the cleaned 2021 taxi trip data, available [here](https://github.com/anw-g01/nyc-taxi-trips/tree/main/data/clean){target="_blank"}. It explores variable distributions, missing values, and key summary statistics across numerical and categorical features.
 
 ```{r code-setup}
 #| include: false
@@ -47,9 +47,9 @@ TAXI_TRIPS_NYC <- readRDS(file = file.path(CLEAN, "taxi_trips_nyc.rds"))
 
 # Key Distributions
 
-View numerical distrbution of key numerical variables using Kernal Density Estimate plots.
+This section visualises the distributions of key trip variables using [Kernel Density Estimation (KDE)](https://en.wikipedia.org/wiki/Kernel_density_estimation){target="_blank"} plots.
 
-::: {.panel-tabset .nav-pills}
+::: panel-tabset
 
 ## Trip Distance
 
@@ -298,7 +298,7 @@ ggplot(
     )
 ```
 
-## Overall Hourly Trip Activity
+## Hourly Trip Activity
 
 ```{r overall-hourly-pickup-kde}
 #| code-line-numbers: true
@@ -381,26 +381,95 @@ ggplot(
 
 :::
 
-# Summary of Variables
+# Summary of Missing Values
 
-## Missing Values
+The following table summarises the number of missing values for each column in the dataset.
 
-```{r}
-
+```{r missing-values}
+TAXI_TRIPS_NYC %>% 
+    # count no. of missing values across all columns
+    summarise(
+        across(everything(), ~ sum(is.na(.)))
+    ) %>%
+    # transpose columns to rows for display
+    pivot_longer(
+        cols = everything(),
+        names_to = "column",
+        values_to = "n_missing"
+    ) %>%
+    # show only variables with missing
+    # filter(n_missing > 0) %>% 
+    # sort by descending 
+    arrange(desc(n_missing)) %>% 
+    kable()
 ```
+
+
+# Summary of Numerical and Character Columns
 
 ::: panel-tabset
 
-## Numerical Variables
+## Numerical
 
-```{r}
+The following table summarises the minimum, mean, and maximum values of numerical variables.
 
+```{r num-vars-summary}
+
+TAXI_TRIPS_NYC %>% 
+    summarise(
+        # calculate the min/mean/max of all numerical columns
+        across(
+            where(is.numeric),
+            list(
+                min  = ~ round(min(., na.rm = TRUE), 2),
+                mean = ~ round(mean(., na.rm = TRUE), 2),
+                max  = ~ round(max(., na.rm = TRUE), 2)
+            )
+        )
+    )  %>%
+    # transpose columns into long format
+    pivot_longer(
+        everything(),
+        names_to = c("variable", ".value"),
+        names_pattern = "(.+)_(min|max|mean)"   # use naming to split columns
+    ) %>% 
+    kable()
 ```
 
-## Character Variables
+## Character
 
-```{r}
+This table summarises the number of distinct values in each categorical variable. 
 
+```{r char-vars-summary}
+
+TAXI_TRIPS_NYC %>% 
+    # calculate unique values of all columns
+    summarise(
+        across(
+            where(~ is.character(.) | is.factor(.)),
+            ~ n_distinct(., na.rm = TRUE)
+        )
+    ) %>%
+    # transpose columns into long format
+    pivot_longer(
+        everything(),
+        names_to = "column",
+        values_to = "n_distinct"
+    ) %>% 
+    kable()
 ```
 
 :::
+
+# Sample
+
+View a random sample from the dataset.
+
+```{r random-sample}
+set.seed(3)
+
+TAXI_TRIPS_NYC %>% 
+    # select a random sample
+    slice_sample(n = 6) %>%
+    kable()
+```

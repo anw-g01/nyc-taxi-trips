@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='576.00pt' height='432.00pt' viewBox='0 0 576.00 432.00'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw1NzYuMDB8MC4wMHw0MzIuMDA='>
+    <rect x='0.00' y='0.00' width='576.00' height='432.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHw0MzIuMDA=)'>
+<rect x='0.00' y='0.00' width='576.00' height='432.00' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<polyline points='37.50,374.78 561.06,374.78 ' style='stroke-width: 1.07; stroke: #EBEBEB; stroke-linecap: butt;' />
+<polyline points='37.50,297.00 561.06,297.00 ' style='stroke-width: 1.07; stroke: #EBEBEB; stroke-linecap: butt;' />
+<polyline points='37.50,219.22 561.06,219.22 ' style='stroke-width: 1.07; stroke: #EBEBEB; stroke-linecap: butt;' />
+<polyline points='37.50,141.44 561.06,141.44 ' style='stroke-width: 1.07; stroke: #EBEBEB; stroke-linecap: butt;' />
+<rect x='311.74' y='319.02' width='99.72' height='55.77' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #D3D3D3;' />
+<rect x='436.40' y='366.85' width='99.72' height='7.93' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #D3D3D3;' />
+<rect x='62.43' y='91.66' width='99.72' height='283.12' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #3C659A;' />
+<rect x='187.09' y='270.56' width='99.72' height='104.23' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #D3D3D3;' />
+<text x='361.61' y='309.22' text-anchor='middle' style='font-size: 14.23px; font-family: "Palatino Linotype";' textLength='21.33px' lengthAdjust='spacingAndGlyphs'>717</text>
+<text x='486.26' y='357.06' text-anchor='middle' style='font-size: 14.23px; font-family: "Palatino Linotype";' textLength='21.33px' lengthAdjust='spacingAndGlyphs'>102</text>
+<text x='112.29' y='81.86' text-anchor='middle' style='font-size: 14.23px; font-weight: bold;fill: #3C659A; font-family: "Palatino Linotype";' textLength='32.00px' lengthAdjust='spacingAndGlyphs'>3,640</text>
+<text x='236.95' y='260.77' text-anchor='middle' style='font-size: 14.23px; font-family: "Palatino Linotype";' textLength='32.00px' lengthAdjust='spacingAndGlyphs'>1,340</text>
+<text x='32.57' y='377.82' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Palatino Linotype";' textLength='4.41px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='32.57' y='300.03' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Palatino Linotype";' textLength='17.62px' lengthAdjust='spacingAndGlyphs'>1000</text>
+<text x='32.57' y='222.25' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Palatino Linotype";' textLength='17.62px' lengthAdjust='spacingAndGlyphs'>2000</text>
+<text x='32.57' y='144.47' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Palatino Linotype";' textLength='17.62px' lengthAdjust='spacingAndGlyphs'>3000</text>
+<text x='112.29' y='393.70' text-anchor='middle' style='font-size: 10.56px; font-family: "Palatino Linotype";' textLength='50.80px' lengthAdjust='spacingAndGlyphs'>Manhattan</text>
+<text x='236.95' y='393.70' text-anchor='middle' style='font-size: 10.56px; font-family: "Palatino Linotype";' textLength='43.03px' lengthAdjust='spacingAndGlyphs'>Brooklyn</text>
+<text x='361.61' y='393.70' text-anchor='middle' style='font-size: 10.56px; font-family: "Palatino Linotype";' textLength='35.36px' lengthAdjust='spacingAndGlyphs'>Queens</text>
+<text x='486.26' y='393.70' text-anchor='middle' style='font-size: 10.56px; font-family: "Palatino Linotype";' textLength='27.94px' lengthAdjust='spacingAndGlyphs'>Bronx</text>
+<text x='14.94' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='25.03px' lengthAdjust='spacingAndGlyphs'>Total</text>
+<text x='42.73' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='38.45px' lengthAdjust='spacingAndGlyphs'>number</text>
+<text x='83.93' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='9.66px' lengthAdjust='spacingAndGlyphs'>of</text>
+<text x='96.33' y='50.50' style='font-size: 11.00px; font-weight: bold;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='31.16px' lengthAdjust='spacingAndGlyphs'>Green</text>
+<text x='130.24' y='50.50' style='font-size: 11.00px; font-weight: bold;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='21.11px' lengthAdjust='spacingAndGlyphs'>Taxi</text>
+<text x='154.10' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='22.41px' lengthAdjust='spacingAndGlyphs'>trips</text>
+<text x='179.26' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='12.20px' lengthAdjust='spacingAndGlyphs'>by</text>
+<text x='194.21' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='34.06px' lengthAdjust='spacingAndGlyphs'>pickup</text>
+<text x='231.02' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='44.34px' lengthAdjust='spacingAndGlyphs'>borough,</text>
+<text x='278.12' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='24.28px' lengthAdjust='spacingAndGlyphs'>NYC</text>
+<text x='305.15' y='50.50' style='font-size: 11.00px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='29.31px' lengthAdjust='spacingAndGlyphs'>(2021)</text>
+<text x='14.94' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='30.25px' lengthAdjust='spacingAndGlyphs'>Top</text>
+<text x='49.32' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='53.14px' lengthAdjust='spacingAndGlyphs'>Pickup</text>
+<text x='106.58' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='65.00px' lengthAdjust='spacingAndGlyphs'>Borough</text>
+<text x='175.71' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='24.80px' lengthAdjust='spacingAndGlyphs'>For</text>
+<text x='204.63' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='46.75px' lengthAdjust='spacingAndGlyphs'>Green</text>
+<text x='255.51' y='26.32' style='font-size: 16.50px; font-weight: bold; font-family: "Palatino Linotype";' textLength='43.12px' lengthAdjust='spacingAndGlyphs'>Taxis:</text>
+<text x='302.76' y='26.32' style='font-size: 16.50px; font-weight: bold;fill: #3C659A; font-family: "Palatino Linotype";' textLength='81.95px' lengthAdjust='spacingAndGlyphs'>Manhattan</text>
+<text x='561.06' y='414.89' text-anchor='end' style='font-size: 7.70px;fill: #6E6E6E; font-family: "Palatino Linotype";' textLength='255.72px' lengthAdjust='spacingAndGlyphs'>Source: NYC Taxi &amp; Limousine Commission (TLC) Trip Record Data (2021)</text>
+</g>
+</g>
+</svg>
