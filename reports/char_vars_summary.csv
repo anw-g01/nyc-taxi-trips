@@ -1,0 +1,7 @@
+column,n_distinct
+UniqueID,83691
+VendorID,3
+store_and_fwd_flag,2
+RatecodeID,6
+PaymentType,6
+trip_type,3

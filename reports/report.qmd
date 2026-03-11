@@ -602,7 +602,6 @@ Analyse how taxi trip demand fluctuates throughout a day, visualising the **hour
 ```{r overall-hourly-pickup-kde}
 #| code-line-numbers: true
 
-# plot: kernel density estimate (KDE) 
 ggplot(
     TAXI_TRIPS_NYC, aes(
         x = pickup_hour,

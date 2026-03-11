@@ -89,8 +89,49 @@ for (df_name in names(df_list)) {
     )
 }
 
+# summarise the min/max/mean of all numerical columns
+NUM_VARS_SUMMARY <- TRIPS %>% 
+    summarise(
+        across(
+            where(is.numeric),
+            list(
+                min  = ~ round(min(., na.rm = TRUE), 2),
+                mean = ~ round(mean(., na.rm = TRUE), 2),
+                max  = ~ round(max(., na.rm = TRUE), 2)
+            )
+        )
+    )  %>%
+    # transpose columns into long format
+    pivot_longer(
+        everything(),
+        names_to = c("variable", ".value"),
+        names_pattern = "(.+)_(min|max|mean)"
+    )
+
+write_csv(NUM_VARS_SUMMARY, file = file.path(REPORTS, "num_vars_summary.csv"))
+
+# summarise distinct values of all character columns
+CHAR_VARS_SUMMARY <- TRIPS %>% 
+    summarise(
+        across(
+            where(~ is.character(.) | is.factor(.)),
+            ~ n_distinct(., na.rm = TRUE)
+        )
+    ) %>%
+    pivot_longer(
+        everything(),
+        names_to = "column",
+        values_to = "n_distinct"
+    )
+
+write_csv(CHAR_VARS_SUMMARY, file = file.path(REPORTS, "char_vars_summary.csv"))
+
 # optional: remove temporary objects from environment variables
 rm(df_name, df)
+
+# ------------------------------------------- #
+# ---------- DATA INSPECTION (EDA) ---------- #
+# ------------------------------------------- #
 
 # create a new environment contrainer to store EDA datasets (for inspection only)
 EDA <- new.env()

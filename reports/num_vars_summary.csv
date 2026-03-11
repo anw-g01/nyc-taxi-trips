@@ -1,0 +1,11 @@
+variable,min,mean,max
+passenger_count,0,1.31,32
+trip_distance,0,194.2,260517.93
+fare_amount,-150,20.39,480
+extra,-4.5,1.16,8.25
+mta_tax,-0.5,0.29,0.5
+tip_amount,-1.14,1.06,87.71
+tolls_amount,0,0.62,30.05
+improvement_surcharge,-0.3,0.3,0.3
+total_amount,-150.3,24.2,480.31
+congestion_surcharge,-2.75,0.64,2.75
