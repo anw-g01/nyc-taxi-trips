@@ -32,7 +32,7 @@ execute:
     message: false
 ---
 
-This report presents analyses and visualisations of 2021 taxi trip data from the processed dataset available at `data/clean/taxi_trips_nyc.csv`. The outputs focus on trip activity and patterns, including taxi vendor performance, revenue trends, tipping behaviour, and hourly peak travel periods.
+This report presents a series of visualisations and analyses based on the cleaned **NYC Taxi Trip (2021)** dataset, available [here](https://github.com/anw-g01/nyc-taxi-trips/tree/main/data/clean){target="_blank"}. The outputs focus on trip activity and patterns, including taxi vendor performance, revenue trends, tipping behaviour, and hourly peak travel periods.
 
 ```{r code-setup}
 #| include: false
@@ -43,7 +43,6 @@ source(here::here("scripts", "00_setup.R"))
 # export cleaned and processed taxi trips dataset
 TAXI_TRIPS_NYC <- readRDS(file = file.path(CLEAN, "taxi_trips_nyc.rds"))
 ```
-
 
 # Revenue by Taxi Vendor
 
@@ -256,7 +255,7 @@ metrics_long %>%
 
 **How has revenue changed over 2021 for both vendors?**
 
-Revenue for both vendors remained broadly stable throughout 2021, with short-term fluctuations, while `Uber` showed a slight upward trend.
+Revenue for both vendors remained broadly stable throughout 2021, with short-term fluctuations, while *Uber* showed a slight upward trend.
 
 ::: panel-tabset
 
@@ -378,7 +377,7 @@ ggplot(
 ### Data
 
 ```{r}
-#| code-fold: false
+#| echo: false
 
 daily_revenues
 ```
@@ -527,7 +526,7 @@ ggplot(
 ### Data
 
 ```{r}
-#| code-fold: false
+#| echo: false
 
 rev_by_trips %>% select(-bar_colour) %>% kable()
 ```
@@ -682,7 +681,7 @@ ggplot(
 ## Data 
 
 ```{r}
-#| code-fold: false 
+#| echo: false 
 
 avg_spend_by_weekday %>% select(-bar_colour) %>% kable()
 ```
@@ -829,7 +828,7 @@ ggplot(
 ```
 
 ```{r}
-#| code-fold: false
+#| echo: false
 
 trips_by_borough %>% select(-bar_colour) %>% kable()
 ```
@@ -946,7 +945,7 @@ ggplot(
 ```
 
 ```{r}
-#| code-fold: false
+#| echo: false
 
 vendor_trips_by_borough
 ```
@@ -1035,8 +1034,8 @@ ggplot(
             y = avg_tip,
             label = scales::label_currency(prefix = "$")(max_avg_tip)
         ),
-        vjust = 2,
-        hjust = -0.6,
+        vjust = 0.5,
+        hjust = -0.35,
         colour = highlight_colour,
         fontface = "bold"
     ) +
@@ -1055,8 +1054,8 @@ ggplot(
             y = avg_tip,
             label = scales::label_currency(prefix = "$")(min_avg_tip)
         ),
-        vjust = -1,
-        hjust = -0.6,
+        vjust = 0.4,
+        hjust = -0.35,
         colour = highlight_colour,
         fontface = "bold"
     ) +
@@ -1125,7 +1124,7 @@ ggplot(
 ```
 
 ```{r}
-#| code-fold: false
+#| echo: false
 
 avg_tips_by_hour
 ```
@@ -1261,7 +1260,7 @@ ggplot(
 ```
 
 ```{r}
-#| code-fold: false
+#| echo: false
 
 avg_tips_by_passenger_count %>% select(-bar_colour) %>% kable()
 ```
@@ -1397,7 +1396,7 @@ ggplot(
 ```
 
 ```{r}
-#| code-fold: false
+#| echo: false
 
  avg_tips_by_borough %>% select(-bar_colour) %>% kable()
 ```
@@ -1521,7 +1520,7 @@ ggplot(
     annotate(
         geom = "text",
         x = 4.5, y = 4500,
-        label = "Morning Peak\nfrom 9-10am",
+        label = "Morning Peak\nfrom 9-11am",
         hjust = 0.5,
         size = 3.5,
         family = BASE_FAMILY
@@ -1616,7 +1615,7 @@ ggsave(
 
 **Which vendor is most active in the evening?**
 
-*Uber* dominates evening demand and activity from 3pm onwards, with a peak at 6pm, while *Other* vendors dominate the morning peak around 9-10am.
+*Uber* dominates evening demand and activity from 3pm onwards, with a peak at 6pm, while *Other* vendors dominate the morning peak around 9-11am.
 
 ```{r hourly-pickup-by-vendor-kde}
 #| code-line-numbers: true
